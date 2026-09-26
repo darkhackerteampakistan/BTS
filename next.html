@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Application Submitted — BTS Meet & Greet</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{--bg:#0a0a0f;--purple:#9d5cff;--pink:#ff5cc8;--green:#22c55e;--txt:#f0e8ff;--muted:#9d94c2;}
+  html,body{height:100%;}
+  body{
+    font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);
+    display:flex;align-items:center;justify-content:center;
+    min-height:100vh;padding:20px;
+    position:relative;overflow:hidden;
+  }
+  .orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.3;pointer-events:none;}
+  .orb.o1{width:400px;height:400px;background:var(--purple);top:-100px;left:-100px;}
+  .orb.o2{width:350px;height:350px;background:var(--pink);bottom:-100px;right:-100px;}
+
+  .card{
+    position:relative;z-index:2;
+    text-align:center;
+    padding:60px 48px;
+    max-width:480px;width:100%;
+    background:linear-gradient(180deg,#141420 0%,#0f0f1a 100%);
+    border:1px solid #232336;
+    border-radius:26px;
+    box-shadow:0 40px 100px rgba(0,0,0,0.6),0 0 80px rgba(157,92,255,0.2);
+  }
+  .card::before{
+    content:"";position:absolute;top:-2px;left:20%;right:20%;height:3px;
+    background:linear-gradient(90deg,transparent,var(--purple),var(--pink),transparent);
+    box-shadow:0 0 24px var(--purple);border-radius:3px;
+  }
+
+  .ring{
+    width:110px;height:110px;margin:0 auto 28px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--purple),var(--pink));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 20px 60px rgba(157,92,255,0.5);
+    animation:pop .7s cubic-bezier(0.2,0.9,0.3,1.3);
+    position:relative;
+  }
+  .ring::after{
+    content:"";position:absolute;inset:-8px;
+    border:2px dashed rgba(157,92,255,0.4);
+    border-radius:50%;
+    animation:spin 12s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes pop{0%{transform:scale(.3);opacity:0;}65%{transform:scale(1.1);}100%{transform:scale(1);opacity:1;}}
+  .ring svg{width:52px;height:52px;stroke:#fff;stroke-width:3;fill:none;}
+
+  .tag{
+    font-size:11px;font-weight:700;
+    letter-spacing:0.25em;text-transform:uppercase;
+    color:var(--pink);
+    margin-bottom:16px;
+  }
+
+  h1{
+    font-family:'Playfair Display',serif;
+    font-size:38px;font-weight:700;letter-spacing:-0.02em;
+    line-height:1.1;margin-bottom:14px;color:#fff;
+  }
+  h1 em{
+    font-style:italic;
+    background:linear-gradient(135deg,var(--purple),var(--pink));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+
+  p{
+    font-size:15px;color:var(--muted);line-height:1.7;margin:0;
+  }
+
+  .stats{
+    margin-top:28px;padding-top:22px;
+    border-top:1px dashed #232336;
+    display:flex;justify-content:center;gap:32px;
+  }
+  .stats .s{text-align:center;}
+  .stats .s .v{
+    font-family:'Playfair Display',serif;
+    font-size:22px;font-weight:700;color:#fff;
+  }
+  .stats .s .l{
+    font-size:10.5px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:0.1em;
+    margin-top:4px;font-weight:600;
+  }
+
+  .redirect{
+    margin-top:24px;
+    font-size:12px;color:var(--muted);
+    letter-spacing:0.1em;text-transform:uppercase;font-weight:600;
+  }
+  .redirect::after{
+    content:"…";animation:dots 1.4s infinite;
+  }
+  @keyframes dots{0%{content:".";}33%{content:"..";}66%{content:"...";}100%{content:".";}}
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<div class="card">
+  <div class="ring">
+    <svg viewBox="0 0 24 24">
+      <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <div class="tag">● Application received</div>
+  <h1>Thank you, <em>ARMY</em>.</h1>
+  <p>Your application has been submitted successfully. Our team will contact you within 48 hours if selected.</p>
+
+  <div class="stats">
+    <div class="s">
+      <div class="v">48h</div>
+      <div class="l">Response</div>
+    </div>
+    <div class="s">
+      <div class="v">100%</div>
+      <div class="l">Confidential</div>
+    </div>
+    <div class="s">
+      <div class="v">7★</div>
+      <div class="l">Members</div>
+    </div>
+  </div>
+
+  <div class="redirect">Redirecting to home</div>
+</div>
+
+<script>
+  setTimeout(function(){
+    var to = new URLSearchParams(location.search).get("to");
+    location.href = to || "index.html";
+  }, 5000);
+</script>
+
+</body>
+</html>
