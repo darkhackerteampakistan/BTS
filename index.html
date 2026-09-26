@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BTS Meet & Greet — Official Application</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --bg:#0a0a0f;--panel:#141420;--line:#232336;
+    --txt:#f0e8ff;--txt-dim:#9d94c2;--txt-mute:#5a5480;
+    --purple:#9d5cff;--purple-dark:#7d3fdd;
+    --pink:#ff5cc8;--gold:#ffd166;
+  }
+  html,body{height:100%;}
+  body{
+    font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);
+    min-height:100vh;overflow-x:hidden;letter-spacing:-0.005em;
+    position:relative;
+  }
+
+  /* animated gradient orbs */
+  .orb{
+    position:fixed;border-radius:50%;filter:blur(80px);opacity:.35;
+    pointer-events:none;z-index:0;
+  }
+  .orb.o1{width:500px;height:500px;background:var(--purple);top:-100px;left:-100px;animation:float1 18s ease-in-out infinite;}
+  .orb.o2{width:400px;height:400px;background:var(--pink);bottom:-100px;right:-100px;animation:float2 22s ease-in-out infinite;}
+  .orb.o3{width:300px;height:300px;background:var(--gold);top:40%;right:20%;opacity:.15;animation:float1 26s ease-in-out infinite reverse;}
+  @keyframes float1{0%,100%{transform:translate(0,0);}50%{transform:translate(60px,40px);}}
+  @keyframes float2{0%,100%{transform:translate(0,0);}50%{transform:translate(-50px,-30px);}}
+
+  /* sparkle dots */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px),
+      radial-gradient(circle, rgba(157,92,255,0.5) 1px, transparent 1px);
+    background-size: 80px 80px, 130px 130px;
+    background-position: 0 0, 40px 40px;
+    opacity:.35;
+    animation: sparkle 40s linear infinite;
+  }
+  @keyframes sparkle{
+    from{background-position:0 0, 40px 40px;}
+    to{background-position:80px 80px, 170px 170px;}
+  }
+
+  /* top nav */
+  .nav{
+    position:relative;z-index:5;
+    padding:22px 48px;
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(12px);
+    background:rgba(10,10,15,0.6);
+  }
+  .brand{
+    display:flex;align-items:center;gap:12px;
+    font-family:'Playfair Display',serif;
+    font-size:22px;font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .brand-mark{
+    width:38px;height:38px;border-radius:11px;
+    background:linear-gradient(135deg,var(--purple),var(--pink));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:18px;font-weight:900;
+    box-shadow:0 6px 20px rgba(157,92,255,0.5);
+  }
+  .brand em{font-style:italic;color:var(--purple);}
+
+  .nav-chip{
+    font-size:12px;font-weight:600;
+    padding:8px 14px;
+    background:rgba(157,92,255,0.12);
+    color:var(--purple);
+    border:1px solid rgba(157,92,255,0.3);
+    border-radius:999px;
+    letter-spacing:0.05em;
+    display:flex;align-items:center;gap:7px;
+  }
+  .nav-chip::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:var(--purple);box-shadow:0 0 10px var(--purple);
+    animation:blink 1.4s infinite;
+  }
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  /* hero */
+  .hero{
+    position:relative;z-index:5;
+    max-width:1200px;margin:0 auto;
+    padding:80px 48px 60px;
+    display:grid;grid-template-columns:1.1fr 0.9fr;
+    gap:60px;align-items:center;
+  }
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:11.5px;font-weight:700;
+    letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--gold);
+    padding:7px 15px;
+    background:rgba(255,209,102,0.08);
+    border:1px solid rgba(255,209,102,0.28);
+    border-radius:999px;
+    margin-bottom:26px;
+  }
+  .eyebrow::before{content:"★";font-size:11px;}
+
+  h1{
+    font-family:'Playfair Display',serif;
+    font-size:76px;font-weight:700;
+    line-height:0.98;letter-spacing:-0.03em;
+    margin-bottom:26px;
+    color:#fff;
+  }
+  h1 em{
+    font-style:italic;
+    background:linear-gradient(135deg,var(--purple),var(--pink) 60%,var(--gold));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  h1 .outline{
+    -webkit-text-stroke:2px var(--purple);
+    -webkit-text-fill-color:transparent;
+  }
+
+  .lead{
+    font-size:16.5px;line-height:1.75;color:var(--txt-dim);
+    max-width:520px;margin-bottom:38px;
+  }
+
+  .actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:12px;
+    padding:17px 32px;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;font-weight:700;
+    letter-spacing:0.01em;
+    color:#fff;
+    background:linear-gradient(135deg,var(--purple),var(--purple-dark));
+    border:none;border-radius:14px;
+    text-decoration:none;cursor:pointer;
+    box-shadow:0 12px 32px rgba(157,92,255,0.45);
+    transition:all .28s ease;
+    position:relative;overflow:hidden;
+  }
+  .btn-primary::before{
+    content:"";position:absolute;top:0;left:-100%;
+    width:100%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+    transition:left .7s;
+  }
+  .btn-primary:hover::before{left:100%;}
+  .btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 16px 40px rgba(157,92,255,0.6);
+  }
+  .btn-primary .arrow{transition:transform .28s;}
+  .btn-primary:hover .arrow{transform:translateX(4px);}
+
+  .btn-ghost{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:17px 24px;
+    font-size:14.5px;font-weight:600;
+    color:var(--txt);
+    background:transparent;
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    text-decoration:none;
+    transition:all .2s;
+  }
+  .btn-ghost:hover{border-color:var(--purple);color:var(--purple);}
+
+  .meta-row{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:32px;margin-top:56px;padding-top:32px;
+    border-top:1px solid var(--line);
+  }
+  .meta-item .num{
+    font-family:'Playfair Display',serif;
+    font-size:34px;font-weight:700;
+    letter-spacing:-0.03em;line-height:1;
+    color:#fff;
+  }
+  .meta-item .num em{font-style:italic;color:var(--purple);}
+  .meta-item .lbl{
+    font-size:12px;color:var(--txt-mute);
+    margin-top:10px;text-transform:uppercase;
+    letter-spacing:0.1em;font-weight:600;
+  }
+
+  /* right visual - fan card */
+  .visual{position:relative;display:flex;justify-content:center;align-items:center;min-height:560px;}
+
+  .fan-card{
+    width:100%;max-width:380px;
+    background:linear-gradient(180deg,var(--panel) 0%,#0f0f1a 100%);
+    border:1px solid var(--line);
+    border-radius:26px;
+    padding:28px;
+    box-shadow:0 40px 100px rgba(0,0,0,0.6),0 0 80px rgba(157,92,255,0.15);
+    position:relative;overflow:hidden;
+  }
+  .fan-card::before{
+    content:"";position:absolute;top:-2px;left:20%;right:20%;height:3px;
+    background:linear-gradient(90deg,transparent,var(--purple),var(--pink),transparent);
+    box-shadow:0 0 24px var(--purple);
+    border-radius:3px;
+  }
+  .fan-card::after{
+    content:"";position:absolute;top:20%;right:-80px;
+    width:200px;height:200px;border-radius:50%;
+    background:radial-gradient(circle,rgba(157,92,255,0.15),transparent 70%);
+  }
+
+  .card-label{
+    font-size:10.5px;font-weight:700;
+    letter-spacing:0.25em;text-transform:uppercase;
+    color:var(--purple);
+    margin-bottom:16px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .card-label::after{
+    content:"● LIVE";color:var(--pink);font-size:10px;
+    letter-spacing:0.1em;
+  }
+
+  .member-preview{
+    display:flex;flex-direction:column;gap:12px;
+    margin-bottom:22px;
+  }
+  .member-row{
+    display:flex;align-items:center;gap:12px;
+    padding:12px;border-radius:14px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.05);
+    transition:all .2s;
+  }
+  .member-row:hover{background:rgba(157,92,255,0.08);border-color:rgba(157,92,255,0.25);}
+  .member-av{
+    width:44px;height:44px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:16px;
+    color:#fff;
+  }
+  .member-av.rm{background:linear-gradient(135deg,#ff5cc8,#ff3d9a);}
+  .member-av.jin{background:linear-gradient(135deg,#9d5cff,#7d3fdd);}
+  .member-av.suga{background:linear-gradient(135deg,#00d4ff,#0099cc);}
+  .member-av.jhope{background:linear-gradient(135deg,#ffd166,#f5a623);}
+  .member-av.jimin{background:linear-gradient(135deg,#ff5c5c,#cc3333);}
+  .member-av.v{background:linear-gradient(135deg,#5cff9d,#22c55e);}
+  .member-av.jk{background:linear-gradient(135deg,#a855f7,#7c3aed);}
+
+  .member-info{flex:1;}
+  .member-info .name{font-size:14px;font-weight:700;color:#fff;}
+  .member-info .role{font-size:11px;color:var(--txt-mute);margin-top:3px;letter-spacing:0.03em;}
+  .member-info .slot{
+    font-size:10.5px;font-weight:600;
+    color:var(--gold);
+    margin-top:4px;
+    letter-spacing:0.05em;
+  }
+  .member-badge{
+    font-size:10px;font-weight:700;
+    padding:4px 9px;border-radius:6px;
+    background:rgba(34,197,94,0.15);
+    color:#22c55e;
+    letter-spacing:0.08em;
+  }
+
+  .card-footer{
+    padding-top:18px;
+    border-top:1px dashed var(--line);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .card-footer .left{font-size:11px;color:var(--txt-mute);letter-spacing:0.05em;text-transform:uppercase;font-weight:600;}
+  .card-footer .right{font-size:11px;color:var(--purple);font-weight:700;letter-spacing:0.05em;}
+
+  /* floating badge */
+  .float-badge{
+    position:absolute;top:12%;right:-14px;
+    background:linear-gradient(135deg,var(--purple),var(--pink));
+    color:#fff;
+    padding:12px 18px;border-radius:14px;
+    font-size:12px;font-weight:700;
+    letter-spacing:0.05em;text-transform:uppercase;
+    box-shadow:0 16px 40px rgba(157,92,255,0.5);
+    animation:float 4s ease-in-out infinite;
+    z-index:2;
+  }
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+  .float-badge2{
+    position:absolute;bottom:14%;left:-10px;
+    background:var(--panel);border:1px solid var(--line);
+    color:var(--txt);
+    padding:12px 16px;border-radius:14px;
+    font-size:11.5px;font-weight:600;
+    box-shadow:0 16px 40px rgba(0,0,0,0.5);
+    animation:float 4s ease-in-out infinite 1s;
+    display:flex;align-items:center;gap:10px;
+    z-index:2;
+  }
+  .float-badge2 .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:#22c55e;box-shadow:0 0 10px #22c55e;
+    animation:blink 1.2s infinite;
+  }
+
+  /* footer */
+  .footer{
+    position:relative;z-index:5;
+    padding:26px 48px;
+    border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12.5px;color:var(--txt-mute);
+    flex-wrap:wrap;gap:12px;
+  }
+  .footer a{color:inherit;text-decoration:none;margin-left:22px;}
+  .footer a:hover{color:var(--purple);}
+
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;padding:40px 22px;gap:44px;}
+    h1{font-size:48px;}
+    .nav{padding:16px 22px;}
+    .brand{font-size:18px;}
+    .brand-mark{width:32px;height:32px;font-size:15px;}
+    .meta-row{grid-template-columns:1fr;gap:20px;}
+    .visual{min-height:420px;}
+    .float-badge{right:0;}
+    .footer{padding:20px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<nav class="nav">
+  <div class="brand">
+    <div class="brand-mark">B</div>
+    BTS<em>.</em>Meet
+  </div>
+  <span class="nav-chip">Applications open</span>
+</nav>
+
+<main class="hero">
+
+  <section>
+    <div class="eyebrow">Official Fan Meet & Greet 2026</div>
+    <h1>Meet the <em>legends</em>.<br><span class="outline">Live.</span><br>In person.</h1>
+    <p class="lead">
+      A once-in-a-lifetime chance to meet all seven members in an intimate
+      backstage session. Submit your application with a photo and personal
+      details — selected fans will be contacted directly.
+    </p>
+    <div class="actions">
+      <a class="btn-primary" href="apply.html" id="ctaBtn">
+        Apply now <span class="arrow">→</span>
+      </a>
+      <a class="btn-ghost" href="#how">How it works</a>
+    </div>
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="num">7<em>★</em></div>
+        <div class="lbl">Members</div>
+      </div>
+      <div class="meta-item">
+        <div class="num">2026<em>·</em>03</div>
+        <div class="lbl">Event date</div>
+      </div>
+      <div class="meta-item">
+        <div class="num">50<em>k</em></div>
+        <div class="lbl">Applications</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visual">
+    <div class="float-badge">★ Limited slots</div>
+    <div class="float-badge2">
+      <span class="dot"></span>
+      <span>847 fans selected this week</span>
+    </div>
+
+    <div class="fan-card">
+      <div class="card-label">
+        <span>Member lineup</span>
+      </div>
+
+      <div class="member-preview">
+        <div class="member-row">
+          <div class="member-av rm">RM</div>
+          <div class="member-info">
+            <div class="name">Kim Namjoon</div>
+            <div class="role">Leader · Rapper</div>
+            <div class="slot">Meeting slot: 14:30</div>
+          </div>
+          <span class="member-badge">OPEN</span>
+        </div>
+        <div class="member-row">
+          <div class="member-av jin">J</div>
+          <div class="member-info">
+            <div class="name">Kim Seokjin</div>
+            <div class="role">Vocalist · Visual</div>
+            <div class="slot">Meeting slot: 14:45</div>
+          </div>
+          <span class="member-badge">OPEN</span>
+        </div>
+        <div class="member-row">
+          <div class="member-av jk">JK</div>
+          <div class="member-info">
+            <div class="name">Jeon Jungkook</div>
+            <div class="role">Maknae · Vocalist</div>
+            <div class="slot">Meeting slot: 15:00</div>
+          </div>
+          <span class="member-badge">OPEN</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span class="left">+ 4 more members</span>
+        <span class="right">Full lineup →</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer" id="how">
+  <span>© 2026 BTS Meet & Greet · Fan application portal</span>
+  <span>
+    <a href="apply.html">Apply</a>
+    <a href="#">Rules</a>
+    <a href="#">Contact</a>
+  </span>
+</footer>
+
+</body>
+</html>
